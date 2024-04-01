@@ -97,4 +97,4 @@ with ui.card(full_screen=True):
             y="body_mass_g",
             color="species",
             size_max=8,
-            labels={"flipper_length_mm": "Flipper Length (mm)", "body_mass_g": "Body Mass (g)"}
+            labels={"flipper_length_mm": "Flipper Length (mm)", "body_mass_g": "Body Mass (g)"})
