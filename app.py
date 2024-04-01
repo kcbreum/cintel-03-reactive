@@ -101,6 +101,10 @@ with ui.card(full_screen=True):
 
 # Reactive calculations and effects
 @reactive.calc
+@reactive.calc
 def filtered_data():
-    return penguins_df
-
+    selected_attribute = input.selected_attribute()
+    selected_species_list = input.selected_species_list()
+    isSpeciesMatch = penguins_df["species"].isin(selected_species_list)
+    filtered_df = penguins_df[isSpeciesMatch]
+    return filtered_df
