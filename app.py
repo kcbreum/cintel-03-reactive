@@ -49,13 +49,13 @@ with ui.accordion(id="acc", open="closed"):
     with ui.accordion_panel("Data Table"):
         @render.data_frame
         def penguin_datatable():
-            return render.DataTable(penguins_df)
+            return render.DataTable(filtered_data())
 
 # Display data grid
     with ui.accordion_panel("Data Grid"):
         @render.data_frame
         def penguin_datagrid():
-            return render.DataGrid(penguins_df)
+            return render.DataGrid(filtered_data())
 
 # Display Plotly histogram
 with ui.navset_card_tab(id="tab"):
@@ -64,7 +64,7 @@ with ui.navset_card_tab(id="tab"):
         @render_plotly
         def plotly_histogram():
             plotly_hist = px.histogram(
-                data_frame=penguins_df,
+                data_frame=filtered_data(),
                 x=input.selected_attribute(),
                 nbins=input.plotly_bin_count(),
                 color="species",
@@ -79,7 +79,7 @@ with ui.navset_card_tab(id="tab"):
     with ui.nav_panel("Seaborn Histogram"):
         @render.plot
         def seaborn_histogram():
-            histplot = sns.histplot(data=penguins_df, x="body_mass_g", bins=input.seaborn_bin_count())
+            histplot = sns.histplot(data=filtered_data(), x="body_mass_g", bins=input.seaborn_bin_count())
             histplot.set_title("Palmer Penguins")
             histplot.set_xlabel("Mass")
             histplot.set_ylabel("Count")
@@ -91,10 +91,16 @@ with ui.card(full_screen=True):
 
     @render_plotly
     def plotly_scatterplot():
-        return px.scatter(penguins_df,
+        return px.scatter(filtered_data(),
             title="Penguin Species",
             x="flipper_length_mm",
             y="body_mass_g",
             color="species",
             size_max=8,
             labels={"flipper_length_mm": "Flipper Length (mm)", "body_mass_g": "Body Mass (g)"})
+
+# Reactive calculations and effects
+@reactive.calc
+def filtered_data():
+    return penguins_df
+
